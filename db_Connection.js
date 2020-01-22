@@ -1,7 +1,7 @@
 var mysql = require('mysql');
 var conn = mysql.createConnection({
-  host     : '192.168.0.102',
-  port:'3306',
+  host     : 'localhost',
+  //port:'3306',
   user     : 'root',
   password : '',
   database : 'everfinodb',
