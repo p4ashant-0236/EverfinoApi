@@ -34,8 +34,8 @@ const conn=require("../db_Connection")
 //admin/modify/:id
 //adminid ,username,password,mobileno,email
   Router.put("/modify/:id",(req,res)=>{
-    var sql="update admin set username=?,password=?,mobileno=?,email=? where adminid=?";
-    var value=[req.body.username,req.body.password,req.body.mobileno,req.body.email,req.params.id]
+    var sql="update admin set password=?,mobileno=?,email=? where adminid=?";
+    var value=[req.body.password,req.body.mobileno,req.body.email,req.params.id]
     conn.query(sql,value,function (error, results) {
        if (error) throw error;
        return res.status(200).json(results)
