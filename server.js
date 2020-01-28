@@ -15,6 +15,9 @@ app.use('/everfino/enduser',enduser);
 const rest=require('./Route/Route_rest');
 app.use('/everfino/rest',rest);
 
+const rest_menu=require('./Route/Rest_Route/Route_menu');
+app.use('/everfino/rest_menu',rest_menu);
+
 const login=require('./Route/Route_login');
 app.use('/everfino',login);
 app.get("/",(req,res)=>{return res.status(201).json({"done":"success"})});
