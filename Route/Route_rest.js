@@ -7,7 +7,7 @@ Router.use(bodyparser.json())
 const conn=require("../db_Connection")
 
 //fatch one
-//restaurant/
+//rest/
   Router.get("/",(req,res)=>{
     conn.query('SELECT * from restaurant', function (error, results) {
         if (error) throw error;
@@ -29,37 +29,40 @@ const conn=require("../db_Connection")
   });
   
 //add new
-//restaurant/add
-//restaurant(restid,mobileno,email,restname,restdesc,address,city ) 
+//rest/add
+//rest(restid,mobileno,email,restname,restdesc,address,city ) 
    
   Router.post("/add",(req,res)=>{
+    console.log("hrllo")
    var sql="insert into restaurant(mobileno,email,restname,restdesc,address,city,status) values(?,?,?,?,?,?,?)";
    var value=[req.body.mobileno,req.body.email,req.body.restname,req.body.restdesc,req.body.address,req.body.city,req.body.status]
-   conn.query(sql,value,function (error, results) {
+   conn.query(sql,value, function (error, results) {
        if (error){ throw error;}
-       else{
+        else{
           
-            var restuser="create table restuser_"+results.insertId+"(userid int primary key auto_increment,name varchar(40),password varchar(20) not null,email varchar(50) not null,mobileno varchar(10),role varchar(10);";
-            var menu="create table menu_"+results.insertId+"(itemid int primary key auto_increment,itemname varchar(40),itemprice int not null,itemdesc varchar(100),itemtype varchar(20));";
-            var diningtable="create table diningtable_"+results.insertId+"(tableid int primary key auto_increment,tableno int,status varchar(10),tableqr varchar(10));";
-            var orders="create table orders_"+results.insertId+"(orderid int primary key auto_increment,userid int,amount int,paymentstatus varchar(10),order_date date,foreign key(userid) references enduser(userid));";
-            var orderitem="create table orderitem_"+results.insertId+"(orderid int,itemid int,quntity int,remark varchar(50),foreign key(orderid) references orders_"+results.insertId+"(orderid),foreign key(itemid) references menu_"+results.insertId+"(itemid));";
-            var reservation="create table reservation_"+results.insertId+"(reservationid int primary key auto_increment,tableid int,userid int,reserve_date date,foreign key(tableid) references diningtable_"+results.insertId+"(tableid),foreign key(userid) references enduser(userid));";
-            var liveorder="create table liveorders_"+results.insertId+"(liveid int primary key auto_increment,orderid int,tableid int,itemid int,userid int,quntity int,status varchar(10),order_date date,foreign key(orderid) references orders_"+results.insertId+"(orderid),foreign key(tableid) references diningtable_"+results.insertId+"(tableid),foreign key(itemid) references menu_"+results.insertId+"(itemid),foreign key(userid) references enduser(userid));";
-            var feedback="create table feedback_"+results.insertId+"(userid int,star int,fbdesc varchar(100),fbdate date,foreign key(userid) references enduser(userid));";
+            var restuser="create table if not exists restuser_"+results.insertId+"(userid int primary key auto_increment,name varchar(40),password varchar(20) not null,email varchar(50) not null,mobileno varchar(10),role varchar(10));";
+            var menu="create table if not exists menu_"+results.insertId+"(itemid int primary key auto_increment,itemname varchar(40),itemprice int not null,itemdesc varchar(100),itemtype varchar(20));";
+            var diningtable="create table if not exists diningtable_"+results.insertId+"(tableid int primary key auto_increment,tableno int,status varchar(10),tableqr varchar(10));";
+            var orders="create table if not exists orders_"+results.insertId+"(orderid int primary key auto_increment,userid int,amount int,paymentstatus varchar(10),order_date date,foreign key(userid) references enduser(userid));";
+            var orderitem="create table if not exists orderitem_"+results.insertId+"(orderid int,itemid int,quntity int,remark varchar(50),foreign key(orderid) references orders_"+results.insertId+"(orderid),foreign key(itemid) references menu_"+results.insertId+"(itemid));";
+            var reservation="create table if not exists  reservation_"+results.insertId+"(reservationid int primary key auto_increment,tableid int,userid int,reserve_date date,foreign key(tableid) references diningtable_"+results.insertId+"(tableid),foreign key(userid) references enduser(userid));";
+            var liveorder="create table if not exists liveorders_"+results.insertId+"(liveid int primary key auto_increment,orderid int,tableid int,itemid int,userid int,quntity int,status varchar(10),order_date date,foreign key(orderid) references orders_"+results.insertId+"(orderid),foreign key(tableid) references diningtable_"+results.insertId+"(tableid),foreign key(itemid) references menu_"+results.insertId+"(itemid),foreign key(userid) references enduser(userid));";
+            var feedback="create table if not exists feedback_"+results.insertId+"(userid int,star int,fbdesc varchar(100),fbdate date,foreign key(userid) references enduser(userid));";
             conn.query(restuser+menu+diningtable+orders+orderitem+reservation+liveorder+feedback,(error,r)=>{if(error)throw error;
-                return res.status(200).json({"userid":results.insertId})})
+                return res.status(200).json({"restid":results.insertId,"restname":req.body.restname})})
            
-       }      
+       }          
      });
   });
   
 //modify
-//restaurant/modify/:id
-//restaurant(restid,mobileno,email,restname,restdesc,address,city ) 
+//rest/modify/:id
+//rest(restid,mobileno,email,restname,restdesc,address,city ) 
   Router.put("/modify/:id",(req,res)=>{
+    
     var sql="update restaurant set mobileno=?,email=?,restname=?,restdesc=?,address=?,city=?,status=? where restid=?";
-    var value=[req.body.mobileno,req.body.email,req.body.restname,req.body.restdesc,req.body.address,req.body.city,req.params.id,req.body.status]
+    var value=[req.body.mobileno,req.body.email,req.body.restname,req.body.restdesc,req.body.address,req.body.city,req.body.status,req.params.id]
+    console.log(value);
     conn.query(sql,value,function (error, results) {
        if (error) throw error;
        return res.status(200).json(results)
@@ -67,8 +70,8 @@ const conn=require("../db_Connection")
   });
   
 //datete 
-//restaurant/delete/:id
-//restaurant(restid,mobileno,email,restname,restdesc,address,city ) 
+//rest/delete/:id
+//rest(restid,mobileno,email,restname,restdesc,address,city ) 
   Router.delete("/delete/:id",(req,res)=>{
   
     var sql="update restaurant set status='deactivate' where restid=?";

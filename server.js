@@ -18,6 +18,15 @@ app.use('/everfino/rest',rest);
 const rest_menu=require('./Route/Rest_Route/Route_menu');
 app.use('/everfino/rest_menu',rest_menu);
 
+const rest_table=require('./Route/Rest_Route/Rest_Table');
+app.use('/everfino/rest_table',rest_table);
+
+const Rest_liveorder=require('./Route/Rest_Route/Rest_liveorder');
+app.use('/everfino/rest_liveorder',Rest_liveorder);
+
+const rest_user=require('./Route/Rest_Route/Rest_restuser');
+app.use('/everfino/rest_user',rest_user);
+
 const login=require('./Route/Route_login');
 app.use('/everfino',login);
 app.get("/",(req,res)=>{return res.status(201).json({"done":"success"})});
