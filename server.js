@@ -27,6 +27,9 @@ app.use('/everfino/rest_liveorder',Rest_liveorder);
 const rest_Order=require('./Route/Rest_Route/Rest_Order');
 app.use('/everfino/rest_Order',rest_Order);
 
+const rest_enduserorder=require('./Route/Rest_Route/Rest_enduserorder');
+app.use('/everfino/rest_enduserorder',rest_enduserorder);
+
 const rest_user=require('./Route/Rest_Route/Rest_restuser');
 app.use('/everfino/rest_user',rest_user);
 

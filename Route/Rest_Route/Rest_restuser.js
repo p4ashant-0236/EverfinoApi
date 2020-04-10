@@ -7,7 +7,7 @@ Router.use(bodyparser.json())
 const conn=require("../../db_Connection")
 
 ///everfino/rest_user/:id       
-//tableid,tableno,status,tableqr
+
   Router.get("/:id",(req,res)=>{
     conn.query('SELECT * from restuser_'+req.params.id, function (error, results) {
         if (error) throw error;
@@ -18,12 +18,13 @@ const conn=require("../../db_Connection")
 
 //fetch 
 ///everfino/rest_user/:id and body have id
-  Router.get('/:id',(req,res)=>{
+  Router.get('/single/:id',(req,res)=>{
   
-    var sql="SELECT * FROM restuser_"+req.params.id+" WHERE itemid=?";
-   conn.query(sql,[req.body.itemid],function (error, results) {
+    var sql="SELECT * FROM restuser_"+req.params.id+" WHERE userid=?";
+   conn.query(sql,[req.query.userid],function (error, results) {
        if (error) throw error;
-       return res.status(201).json(results)
+       console.log(results)
+       return res.status(201).json(results[0])
      });
   
   });

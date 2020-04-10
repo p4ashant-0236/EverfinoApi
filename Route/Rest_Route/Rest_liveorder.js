@@ -37,17 +37,18 @@ const conn=require("../../db_Connection")
   
 //   });
   
-// //add new
-// ///everfino/rest_table/add/:id
-//   Router.post("/add/:id",(req,res)=>{
-//    var sql="insert into diningtable_"+req.params.id+"(tableno,status,tableqr) values(?,?,?)";
-//    var value=[req.body.tableno,req.body.status,req.body.tableqr]
-//    console.log(value);
-//    conn.query(sql,value,function (error, results, fields) {
-//        if (error) throw error;
-//        return res.status(200).json({"tableid":results.insertId})
-//      });
-//   });
+//add new
+///everfino/rest_table/add/:id
+  Router.post("/add/:id",(req,res)=>{
+   var sql="INSERT INTO liveorders_"+req.params.id+"(orderid,tableid,itemid,userid,quntity,status,order_date) VALUES (?,?,?,?,?,?,?)";
+   var value=[req.body.orderid,req.body.tableid,req.body.itemid,req.body.userid,req.body.quntity,req.body.status,req.body.order_date];
+   console.log(value);
+   conn.query(sql,value,function (error, results, fields) {
+       if (error) throw error;
+       conn.query()
+       return res.status(200).json({"liveid":results.insertId})
+     });
+  });
   
 
   Router.put("/modify_liveorderstatus/:id",(req,res)=>{

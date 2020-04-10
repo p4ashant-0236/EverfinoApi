@@ -25,7 +25,7 @@ const conn=require("../db_Connection")
        if (error) throw error;
        return res.status(201).json(results)
      });
-  
+  cd
   });
   
 //add new
@@ -34,8 +34,11 @@ const conn=require("../db_Connection")
   Router.post("/add",(req,res)=>{
    var sql="insert into enduser(name,password,mobileno,email,dob,gender,status) values(?,?,?,?,?,?,?)";
    var value=[req.body.name,req.body.password,req.body.mobileno,req.body.email,req.body.dob,req.body.gender,req.body.status]
+   console.log(value);
    conn.query(sql,value,function (error, results, fields) {
-       if (error) throw error;
+       if (error){return res.status(200).json({"userid":0})};
+       var enduserorder="create table if not exists enduserorder_"+results.insertId+"(orderid int,itemid int,quntity int,restid int)";
+       conn.query(enduserorder,(error,r)=>{if(error)throw error});
        return res.status(200).json({"userid":results.insertId})
      });
   });

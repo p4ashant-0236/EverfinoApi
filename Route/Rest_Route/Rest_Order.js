@@ -49,6 +49,8 @@ const conn=require("../../db_Connection")
                     console.log(results);
                   
                       results.forEach(element => {
+                        conn.query("insert into enduserorder_"+element.userid+"(orderid,itemid,quntity,restid) values(?,?,?,?)",[element.orderid,element.itemid,element.quntity,req.params.id],function(error,results){if(error){throw error;}});
+                             
                               conn.query("insert into orderitem_"+req.params.id+"(orderid,itemid,quntity) values(?,?,?)",[element.orderid,element.itemid,element.quntity],function(error,results){if(error){throw error;}
                               conn.query("delete from liveorders_"+req.params.id+" where liveid="+element.liveid,function(error,results){if(error) throw error;});
                                 });
