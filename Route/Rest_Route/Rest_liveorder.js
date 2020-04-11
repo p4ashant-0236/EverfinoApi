@@ -18,11 +18,21 @@ const conn=require("../../db_Connection")
    
   Router.get("/liveorder_order/:id",(req,res)=>{
     console.log("hello request")
-    conn.query("SELECT liveid, orderid, tableid,liveorders_"+req.params.id+".itemid,menu_"+req.params.id+".itemname,menu_"+req.params.id+".itemprice,userid, quntity, status, order_date FROM liveorders_"+req.params.id+",menu_"+req.params.id+" WHERE liveorders_"+req.params.id+".itemid=menu_"+req.params.id+".itemid AND liveorders_"+req.params.id+".orderid="+req.query.orderid, function (error, results) {
-        if (error) throw error;
-        return res.status(200).json(results)
-      });
+    conn.query("SELECT liveid, orderid, tableid,liveorders_"+req.params.id+".itemid,menu_"+req.params.id+".itemname,menu_"+req.params.id+".itemprice,userid, quntity, status, order_date FROM liveorders_"+req.params.id+",menu_"+req.params.id+" WHERE liveorders_"+req.params.id+".itemid=menu_"+req.params.id+".itemid", function (error, results) {
+      if (error) throw error;
+      return res.status(200).json(results)
+    });
    
+   });
+
+
+
+     Router.get("/liveorder_order/perUserOrder/:id",(req,res)=>{
+     console.log("hello request")
+     conn.query("SELECT liveid, orderid, tableid,liveorders_"+req.params.id+".itemid,menu_"+req.params.id+".itemname,menu_"+req.params.id+".itemprice,userid, quntity, status, order_date FROM liveorders_"+req.params.id+",menu_"+req.params.id+" WHERE liveorders_"+req.params.id+".itemid=menu_"+req.params.id+".itemid AND userid="+req.query.userid, function (error, results) {
+      if (error) throw error;
+      return res.status(200).json(results)
+    });
    });
 
 //fetch 
@@ -40,12 +50,13 @@ const conn=require("../../db_Connection")
 //add new
 ///everfino/rest_table/add/:id
   Router.post("/add/:id",(req,res)=>{
+    console.log(req.body.orderid+""+req.body.tableid+""+req.body.itemid+""+req.body.userid+""+req.body.quntity+""+req.body.status+"__________");
    var sql="INSERT INTO liveorders_"+req.params.id+"(orderid,tableid,itemid,userid,quntity,status,order_date) VALUES (?,?,?,?,?,?,?)";
-   var value=[req.body.orderid,req.body.tableid,req.body.itemid,req.body.userid,req.body.quntity,req.body.status,req.body.order_date];
+   var value=[req.body.orderid,req.body.tableid,req.body.itemid,req.body.userid,req.body.quntity,req.body.status,new Date()];
    console.log(value);
-   conn.query(sql,value,function (error, results, fields) {
+   conn.query(sql,value,function (error, results) {
        if (error) throw error;
-       conn.query()
+      
        return res.status(200).json({"liveid":results.insertId})
      });
   });

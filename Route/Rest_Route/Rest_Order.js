@@ -15,6 +15,18 @@ const conn=require("../../db_Connection")
    
    });
 
+   Router.post("/add/:id",(req,res)=>{
+    var sql="INSERT INTO orders_"+req.params.id+"(userid,amount,paymentstatus,order_date) VALUES (?,?,?,?)";
+    var value=[req.body.userid,req.body.amount,req.body.paymentstatus,new Date()];
+    console.log(value);
+    conn.query(sql,value,function (error, results, fields) {
+        if (error) throw error;
+       
+        console.log("-------->"+results.insertId);
+        return res.status(200).json({"orderid":results.insertId})
+      });
+   });
+
    
   Router.get("/single_order/:id",(req,res)=>{
     console.log("hello request")

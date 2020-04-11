@@ -11,6 +11,7 @@ const conn=require("../db_Connection")
   Router.get("/",(req,res)=>{
     conn.query('SELECT * from restaurant', function (error, results) {
         if (error) throw error;
+        console.log(results)
         return res.status(200).json(results)
       });
    
@@ -23,6 +24,7 @@ const conn=require("../db_Connection")
     var sql="SELECT * FROM restaurant WHERE restid=?";
    conn.query(sql,[req.params.id],function (error, results) {
        if (error) throw error;
+       
        return res.status(201).json(results)
      });
   
