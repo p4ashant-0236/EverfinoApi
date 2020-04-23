@@ -23,7 +23,7 @@ const conn=require("../db_Connection")
     var sql="SELECT * FROM admin WHERE adminid=?";
    conn.query(sql,[req.params.id],function (error, results) {
        if (error) throw error;
-       return res.status(201).json(results)
+       return res.status(201).json(results[0])
      });
   
   });

@@ -35,6 +35,9 @@ app.use('/everfino/rest_user',rest_user);
 
 const login=require('./Route/Route_login');
 app.use('/everfino',login);
+
+const forgot=require('./Route/Route_forgotpass');
+app.use('/everfino/forgot/',forgot);
 app.get("/",(req,res)=>{return res.status(201).json({"done":"success"})});
 
 

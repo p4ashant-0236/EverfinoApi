@@ -51,8 +51,30 @@ const conn=require("../db_Connection")
             var liveorder="create table if not exists liveorders_"+results.insertId+"(liveid int primary key auto_increment,orderid int,tableid int,itemid int,userid int,quntity int,status varchar(10),order_date date,foreign key(orderid) references orders_"+results.insertId+"(orderid),foreign key(tableid) references diningtable_"+results.insertId+"(tableid),foreign key(itemid) references menu_"+results.insertId+"(itemid),foreign key(userid) references enduser(userid));";
             var feedback="create table if not exists feedback_"+results.insertId+"(userid int,star int,fbdesc varchar(100),fbdate date,foreign key(userid) references enduser(userid));";
             conn.query(restuser+menu+diningtable+orders+orderitem+reservation+liveorder+feedback,(error,r)=>{if(error)throw error;
-                return res.status(200).json({"restid":results.insertId,"restname":req.body.restname})})
-           
+                var nodemailer = require('nodemailer');
+                var transporter = nodemailer.createTransport({
+                service:
+                'gmail',
+                auth: {
+                user: 'ramsky2021@gmail.com',
+                pass: 'ramsky@12345'
+                }
+                });
+                var mailOptions = {
+                    from: 'ramsky2021@gmail.com',
+                    to: req.body.email,
+                    subject: 'Sending Email using Node.js'+results.insertId,
+                    text: "Your rest id:"+results.insertId
+                    };
+                    transporter.sendMail(mailOptions, function(error, info){
+                    if (error) {
+                    console.log(error);
+                    } else {
+                    console.log('Email sent: ' + info.response);
+                    
+                    }
+                    }); 
+                    return res.status(200).json({"restid":results.insertId,"restname":req.body.restname})})
        }          
      });
   });
