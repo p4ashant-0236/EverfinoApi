@@ -47,6 +47,8 @@ const conn=require("../db_Connection")
   Router.put("/modify/:id",(req,res)=>{
     var sql="update enduser set name=?,password=?,mobileno=?,email=?,dob=?,gender=?,status=? where userid=?";
     var value=[req.body.name,req.body.password,req.body.mobileno,req.body.email,req.body.dob,req.body.gender,req.body.status,req.params.id]
+    console.log(value);
+    
     conn.query(sql,value,function (error, results) {
        if (error) throw error;
        return res.status(200).json(results)
