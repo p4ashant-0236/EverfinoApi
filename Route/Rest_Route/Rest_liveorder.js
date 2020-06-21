@@ -18,7 +18,7 @@ const conn=require("../../db_Connection")
    
   Router.get("/liveorder_order/:id",(req,res)=>{
     console.log("hello request")
-    conn.query("SELECT liveid, orderid, tableid,liveorders_"+req.params.id+".itemid,menu_"+req.params.id+".itemname,menu_"+req.params.id+".itemprice,userid, quntity, status, order_date FROM liveorders_"+req.params.id+",menu_"+req.params.id+" WHERE liveorders_"+req.params.id+".itemid=menu_"+req.params.id+".itemid", function (error, results) {
+    conn.query("SELECT liveid, orderid, tableid,liveorders_"+req.params.id+".itemid,menu_"+req.params.id+".itemname,menu_"+req.params.id+".itemprice,userid, quntity, status, order_date FROM liveorders_"+req.params.id+",menu_"+req.params.id+" WHERE liveorders_"+req.params.id+".orderid="+req.query.orderid+" and liveorders_"+req.params.id+".itemid=menu_"+req.params.id+".itemid", function (error, results) {
       if (error) throw error;
       return res.status(200).json(results)
     });

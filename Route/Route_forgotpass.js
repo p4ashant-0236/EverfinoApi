@@ -33,14 +33,14 @@ const conn=require("../db_Connection")
               service:
               'gmail',
               auth: {
-              user: 'ramsky2021@gmail.com',
-              pass: 'ramsky@12345'
+              user: "ramsky2021@gmail.com",
+              pass: "ramsky@12345"
               }
               });
               var mailOptions = {
                   from: 'ramsky2021@gmail.com',
                   to: results[0].email,
-                  subject: 'Sending Email using Node.js'+results[0].password,
+                  subject: 'Sending Email using Node.js and old password'+results[0].password,
                   text: "Your password:"+results[0].password
                   };
                   transporter.sendMail(mailOptions, function(error, info){

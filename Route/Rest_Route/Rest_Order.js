@@ -8,7 +8,7 @@ const conn=require("../../db_Connection")
 
 
   Router.get("/:id",(req,res)=>{
-    conn.query("SELECT orderid,enduser.userid,enduser.email,enduser.name,amount,paymentstatus,order_date FROM orders_"+req.params.id+",enduser WHERE orders_"+req.params.id+".orderid=1 AND orders_"+req.params.id+".userid=enduser.userid", function (error, results) {
+    conn.query("SELECT orderid,enduser.userid,enduser.email,enduser.name,amount,paymentstatus,order_date FROM orders_"+req.params.id+",enduser WHERE orders_"+req.params.id+".userid=enduser.userid", function (error, results) {
         if (error) throw error;
         return res.status(200).json(results)
       });
@@ -30,7 +30,7 @@ const conn=require("../../db_Connection")
    
   Router.get("/single_order/:id",(req,res)=>{
     console.log("hello request")
-    conn.query("SELECT orderid,enduser.userid,enduser.email,enduser.name,amount,paymentstatus,order_date FROM orders_"+req.params.id+",enduser WHERE orders_"+req.params.id+".orderid=1 AND orders_"+req.params.id+".userid=enduser.userid AND orders_"+req.params.id+".orderid="+req.query.orderid, function (error, results) {
+    conn.query("SELECT orderid,enduser.userid,enduser.email,enduser.name,amount,paymentstatus,order_date FROM orders_"+req.params.id+",enduser WHERE orders_"+req.params.id+".orderid="+req.query.orderid+" AND orders_"+req.params.id+".userid=enduser.userid AND orders_"+req.params.id+".orderid="+req.query.orderid, function (error, results) {
         if (error) throw error;
         return res.status(200).json(results[0])
       });
@@ -50,6 +50,7 @@ const conn=require("../../db_Connection")
 
    
   Router.put("/modify/:id",(req,res)=>{
+    console.log("update order");
     var sql="update orders_"+req.params.id+" set amount=?,paymentstatus=?,order_date=? where orderid=?";
     var value=[req.body.amount,req.body.paymentstatus,req.body.order_date,req.query.orderid]
     
@@ -64,7 +65,7 @@ const conn=require("../../db_Connection")
                         conn.query("insert into enduserorder_"+element.userid+"(orderid,itemid,quntity,restid) values(?,?,?,?)",[element.orderid,element.itemid,element.quntity,req.params.id],function(error,results){if(error){throw error;}});
                              
                               conn.query("insert into orderitem_"+req.params.id+"(orderid,itemid,quntity) values(?,?,?)",[element.orderid,element.itemid,element.quntity],function(error,results){if(error){throw error;}
-                              conn.query("delete from liveorders_"+req.params.id+" where liveid="+element.liveid,function(error,results){if(error) throw error;});
+                              conn.query("delete from liveorders_"+req.params.id+" where liveid="+element.liveid,function(error,results){if(error) throw error;console.log("delete");});
                                 });
                       });
                    
